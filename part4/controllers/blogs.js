@@ -19,3 +19,5 @@ blogRouter.post('/', (req, res) => {
       res.status(201).json(result);
     });
 });
+
+module.exports = blogRouter;
