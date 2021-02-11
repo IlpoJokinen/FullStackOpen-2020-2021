@@ -1,0 +1,32 @@
+0.4 Muistiinpanon luonnin tapahtumasarja ( https://fullstack-exampleapp.herokuapp.com/notes )
+
+1. selain --> palvelin (POST) new_note https://fullstack-exampleapp.herokuapp.com/new_note
+2. selain --> palvelin (GET) notes https://fullstack-exampleapp.herokuapp.com/notes
+3. palvelin --> selain HTML koodin lähetys
+4. selain --> palvelin (GET) main.css
+5. palvelin --> selain tyylikirjaston lähetys
+6. selain --> palvelin (GET) main.js
+
+
+7. selain suorittaa js. koodia ja hakee json datan palvelimelta
+
+8. palvelin --> selain (GET) data.json
+
+9. selain suorittaa tapahtumankäsittelijän
+   joka renderöi muistiinpanot näytölle
+
+0.5 Käyttäjä menee sivulle ( https://fullstack-exampleapp.herokuapp.com/spa )
+
+Sama tapahtumasarja kuin 0.4:ssa (ilman kohtaa 1 (POST)) , vain pieiniä muutoksia js. tiedostossa, mikä ei enää määritä action
+tai method atribuutteja formille. 
+
+0.6 Muistiinpanon luonnin tapahtumasarja ( https://fullstack-exampleapp.herokuapp.com/spa, (Single Page App) )
+
+1. selain --> palvelin (POST) new_note_spa ( https://fullstack-exampleapp.herokuapp.com/new_note_spa )
+// Tässä tapauksessa post sisältää valmiin json muotoisen olion
+
+2. Palvelin ei pyydä uudelleenohjausta kuten aiemmassa versiossa. 
+Selain pysyy samalla sivulla ja muita HTTP-pyyntöjä ei suoriteta.
+
+//Tapahtumankäsittelijä kutsuu komentoa e.PreventDefault(), mikä estää sivun uudelleen latauksen lähetyksen
+jälkeen!
