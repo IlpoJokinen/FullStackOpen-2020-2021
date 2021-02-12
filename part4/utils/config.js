@@ -1,5 +1,8 @@
-let PORT = 3003;
-let MONGODB_URI = 'mongodb+srv://ilpojokinen:iiLp6UNIX@cluster0.phooh.mongodb.net/blogs?retryWrites=true&w=majority';
+/* eslint-disable no-undef */
+require('dotenv').config();
+
+let PORT = process.env.PORT;
+let MONGODB_URI = process.env.MONGODB_URI;
 
 module.exports = {
   PORT,
