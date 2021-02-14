@@ -31,9 +31,21 @@ const mostBlogs = (blogs) => {
   return mostActiveBlogger;
 };
 
+const mostLikes = (blogs) => {
+  const blogWithMostLikes = _.maxBy(blogs, 'likes');
+  const likesInTotal = blogs.filter(blog => blog.author === blogWithMostLikes.author).reduce((total, curr) => total += curr.likes, 0);
+  const mostLikedBlogger = {
+    author: blogWithMostLikes.author,
+    likes: likesInTotal
+  };
+  return mostLikedBlogger;
+};
+
+
 module.exports = {
   dummy,
   totalLikes,
   favouriteBlog,
-  mostBlogs
+  mostBlogs,
+  mostLikes
 };
