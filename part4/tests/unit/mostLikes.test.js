@@ -1,5 +1,5 @@
-const mostLikes = require('../utils/list_helper').mostLikes;
-const { blogs, blogsWithTwoMostLikedBloggers } = require('./data/blogData');
+const mostLikes = require('../../utils/list_helper').mostLikes;
+const { blogs, blogsWithTwoMostLikedBloggers } = require('../data/blogData');
 
 describe('Blogger with most liked post and likes in total', () => {
 

@@ -1,6 +1,6 @@
-const favouriteBlog = require('../utils/list_helper').favouriteBlog;
-const blogs = require('../tests/data/blogData').blogs;
-const blogsWithMultipleMostLikedBlogs = require('../tests/data/blogData').blogsWithMultipleMostLikedBlogs;
+const favouriteBlog = require('../../utils/list_helper').favouriteBlog;
+const blogs = require('../data/blogData').blogs;
+const blogsWithMultipleMostLikedBlogs = require('../data/blogData').blogsWithMultipleMostLikedBlogs;
 
 describe('favourite blog (most likes)', () => {
   test('if one blog with most likes', () => {

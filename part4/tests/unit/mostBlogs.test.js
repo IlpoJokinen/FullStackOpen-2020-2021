@@ -1,6 +1,6 @@
-const mostBlogs = require('../utils/list_helper').mostBlogs;
-const blogs = require('./data/blogData').blogs;
-const blogsWithMultipleTopBloggers = require('./data/blogData').blogsWithMultipleTopBloggers;
+const mostBlogs = require('../../utils/list_helper').mostBlogs;
+const blogs = require('../data/blogData').blogs;
+const blogsWithMultipleTopBloggers = require('../data/blogData').blogsWithMultipleTopBloggers;
 
 describe('most active blogger', () => {
   beforeAll(() => {

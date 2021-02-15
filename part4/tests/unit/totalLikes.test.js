@@ -1,5 +1,5 @@
-const totalLikes = require('../utils/list_helper').totalLikes;
-const dummyData = require('../tests/data/blogData').blogs;
+const totalLikes = require('../../utils/list_helper').totalLikes;
+const dummyData = require('../data/blogData').blogs;
 
 describe('total likes', () => {
   const listWithOneBlog = [

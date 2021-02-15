@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 const express = require('express');
+require('express-async-errors');
 const mongoose = require('mongoose');
 
 const logger = require('./utils/logger');
