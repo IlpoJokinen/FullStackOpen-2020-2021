@@ -3,6 +3,7 @@ Content-Type: application/json
 
 {
   "title": "JOUJOU",
+  "author": "Ilpo Jokinen",
   "url": "http://www.ilpojokinenfoodblog.me",
-  "likes": 381
+  "likes": 100
 }

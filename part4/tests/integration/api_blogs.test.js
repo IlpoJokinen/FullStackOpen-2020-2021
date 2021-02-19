@@ -102,7 +102,7 @@ test('Duplicate title can not be added to the database', async () => {
   const titlesAtStart = blogsAtStart.map(blog => blog.title);
   let newBlogObject = {
     title: titlesAtStart[Math.floor(Math.random() * titlesAtStart.length)],
-    author: '',
+    author: 'Ilpo Jokinen',
     url: '',
     likes: 0
   };
@@ -111,7 +111,7 @@ test('Duplicate title can not be added to the database', async () => {
     .send(newBlogObject)
     .expect(400);
 
-  expect(JSON.parse(request.text).message).toEqual('Blog validation failed: author: Path `author` is required., title: A blog with the same title is already in the database');
+  expect(JSON.parse(request.text).message).toEqual('Blog validation failed: title: A blog with the same title is already in the database');
 });
 
 afterAll(() => {

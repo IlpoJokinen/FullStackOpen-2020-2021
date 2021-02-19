@@ -3,14 +3,16 @@ const blogRouter = require('express').Router();
 const Blog = require('../models/blog');
 
 blogRouter.get('/', async (req, res) => {
-  let blogs = await Blog.find({});
+  const blogs = await Blog.find({});
   res.json(blogs);
 });
 
 blogRouter.post('/', async (req, res) => {
-  let blogs = await Blog.find({});
-  const blog = new Blog(req.body);
-  let savedBlog = await blog.save();
+  const { body } = req;
+  let likes = !body.likes ? 0 : body.likes;
+  const blogObject = { ...body, likes: likes };
+  const blog = new Blog(blogObject);
+  const savedBlog = await blog.save();
   res.status(201).json(savedBlog);
 });
 
