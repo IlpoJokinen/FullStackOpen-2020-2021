@@ -83,7 +83,7 @@ test('Too short title will cause an error', async () => {
   expect(errorMsg.message).toEqual('Parameter title should be at least 5 characters long');
 });
 
-test('If there are missing required fields in POST request, should throw an correct error', async () => {
+test('If title is missing, should correspond with proper error message and status code', async () => {
   let newBlogObject = {
     author: 'Pekka Pouta',
     url: 'http://pekansää.fi',
@@ -97,13 +97,27 @@ test('If there are missing required fields in POST request, should throw an corr
   expect(JSON.parse(request.text).message).toEqual('Blog validation failed: title: Path `title` is required.');
 });
 
+test('If url is missing, should correspond with proper error message and status code', async () => {
+  let newBlogObject = {
+    title: 'Uusi säätiedoite',
+    author: 'Pekka Pouta',
+    likes: 200
+  };
+  const request = await api
+    .post('/api/blogs')
+    .send(newBlogObject)
+    .expect(400);
+
+  expect(JSON.parse(request.text).message).toEqual('Blog validation failed: url: Path `url` is required.');
+});
+
 test('Duplicate title can not be added to the database', async () => {
   const blogsAtStart = await blogsInDb();
   const titlesAtStart = blogsAtStart.map(blog => blog.title);
   let newBlogObject = {
     title: titlesAtStart[Math.floor(Math.random() * titlesAtStart.length)],
     author: 'Ilpo Jokinen',
-    url: '',
+    url: 'http://ilposite.org/blogs',
     likes: 0
   };
   const request = await api

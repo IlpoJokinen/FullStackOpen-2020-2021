@@ -10,12 +10,13 @@ const blogSchema = mongoose.Schema({
   },
   author: {
     type: String,
-    required: true,
   },
-  url: String,
+  url: {
+    type: String,
+    required: true
+  },
   likes: {
     type: Number,
-    required: true
   }
 });
 blogSchema.plugin(uniqueValidator, { message: 'A blog with the same title is already in the database' });
