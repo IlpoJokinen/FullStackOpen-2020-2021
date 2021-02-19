@@ -38,6 +38,13 @@ test('blog objects are the right type', async () => {
   expect(result).toBeTruthy();
 });
 
+test('The identificators of the objects are called id', async () => {
+  const { body } = await api.get('/api/blogs');
+  body.every(blog => {
+    expect(blog.id).toBeDefined();
+  });
+});
+
 afterAll(() => {
   mongoose.connection.close();
 });
