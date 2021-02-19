@@ -13,8 +13,11 @@ const requestLogger = (request, response, next) => {
 };
 
 const errorHandler = (error, request, response, next) => {
-  const errPaths = Object.values(error.errors).map(el => el.path);
+  const errPaths = error.errors ? Object.values(error.errors).map(el => el.path) : null;
 
+  if (error.name === 'CastError') {
+    return response.status(400).send({ message: 'invalid id' });
+  }
   if (error.name === 'ValidationError' && request.body.title && request.body.title.length < 5) {
     return response.status(409).send({ message: 'Parameter title should be at least 5 characters long' });
   } else if (error.name === 'ValidationError' && errPaths) {
