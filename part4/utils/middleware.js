@@ -12,7 +12,20 @@ const requestLogger = (request, response, next) => {
   next();
 };
 
+const errorHandler = (error, request, response, next) => {
+  const errPaths = Object.values(error.errors).map(el => el.path);
+
+  if (error.name === 'ValidationError' && request.body.title && request.body.title.length < 5) {
+    return response.status(409).send({ message: 'Parameter title should be at least 5 characters long' });
+  } else if (error.name === 'ValidationError' && errPaths) {
+    return response.status(400).send({ message: error.message });
+  } else {
+    next(error);
+  }
+};
+
 module.exports = {
   unknownEndpoint,
-  requestLogger
+  requestLogger,
+  errorHandler
 };

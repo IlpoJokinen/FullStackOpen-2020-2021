@@ -2,8 +2,7 @@ POST  http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-  "title": "What a great recipe!",
-  "author": "Ilpo Jokinen",
+  "title": "JOUJOU",
   "url": "http://www.ilpojokinenfoodblog.me",
   "likes": 381
 }

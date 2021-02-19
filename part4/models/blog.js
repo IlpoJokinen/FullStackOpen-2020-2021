@@ -1,11 +1,24 @@
 const mongoose = require('mongoose');
+const uniqueValidator = require('mongoose-unique-validator');
 
 const blogSchema = mongoose.Schema({
-  title: String,
-  author: String,
+  title: {
+    type: String,
+    minLength: 5,
+    required: true,
+    unique: true
+  },
+  author: {
+    type: String,
+    required: true,
+  },
   url: String,
-  likes: Number
+  likes: {
+    type: Number,
+    required: true
+  }
 });
+blogSchema.plugin(uniqueValidator, { message: 'A blog with the same title is already in the database' });
 
 blogSchema.set('toJSON', {
   transform: (document, returnedObject) => {
