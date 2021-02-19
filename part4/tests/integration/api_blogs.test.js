@@ -153,6 +153,33 @@ describe('When there is initially some blog data available', () => {
       expect(errorMsg).toEqual('invalid id');
     });
   });
+  describe('A blog can be updated', () => {
+    test('Updating the blog document is succesful', async () => {
+      const blogsAtStart = await blogsInDb();
+      let blogToUpdate = blogsAtStart[0];
+      blogToUpdate.likes += 1;
+
+      await api
+        .put(`/api/blogs/${blogToUpdate.id}`)
+        .expect(200);
+
+      const blogsAtEnd = await blogsInDb();
+      expect(blogsAtEnd[0]).not.toEqual(blogToUpdate);
+    });
+    test('Updating with invalid id correspond with proper error', async () => {
+      const id = '1221ololo08080474747';
+      const blogsAtStart = await blogsInDb();
+
+      const request = await api
+        .put(`/api/blogs/${id}`)
+        .expect(400);
+
+      const blogsAtEnd = await blogsInDb();
+      expect(blogsAtStart).toEqual(blogsAtEnd);
+      const errorMsg = JSON.parse(request.text).message;
+      expect(errorMsg).toEqual('invalid id');
+    });
+  });
 });
 
 afterAll(() => {

@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 const blogRouter = require('express').Router();
+const { json } = require('express');
 const Blog = require('../models/blog');
 
 blogRouter.get('/', async (req, res) => {
@@ -19,6 +20,14 @@ blogRouter.post('/', async (req, res) => {
 blogRouter.delete('/:id', async (req, res) => {
   await Blog.findByIdAndRemove(req.params.id);
   res.status(204).end();
+});
+
+blogRouter.put('/:id', async (req, res) => {
+  const { body } = req;
+  const blog = JSON.parse(JSON.stringify(body));
+
+  const updatedBlog = await Blog.findByIdAndUpdate(req.params.id, blog, { new: true });
+  res.json(updatedBlog);
 });
 
 module.exports = blogRouter;
