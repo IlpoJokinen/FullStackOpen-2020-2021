@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const mongoose = require('mongoose');
 const supertest = require('supertest');
 const app = require('../app');
@@ -59,8 +60,19 @@ describe('when there is initially some notes saved', () => {
         .expect(400);
     });
   });
-  describe('addition of a new note', () => {
-    test('a valid note can be added', async () => {
+  describe('addition of a new note if valid token', () => {
+    test('note can be added and saved to the user\'s note array', async () => {
+      const loginRequest = await api
+        .post('/api/login')
+        .send({
+          username: 'mluukkai',
+          password: 'salainen'
+        })
+        .expect(200)
+        .expect('Content-Type', /application\/json/);
+      const { body } = loginRequest;
+      const token = body.token;
+
       const newNote = {
         content: 'async/await simplifies making async calls',
         important: true
@@ -68,6 +80,7 @@ describe('when there is initially some notes saved', () => {
 
       await api
         .post('/api/notes')
+        .set('Authorization', 'bearer ' + token)
         .send(newNote)
         .expect(200)
         .expect('Content-Type', /application\/json/);
@@ -81,13 +94,26 @@ describe('when there is initially some notes saved', () => {
         'async/await simplifies making async calls'
       );
     });
+
     test('fails with status code 400 if data invalid', async () => {
+      const loginRequest = await api
+        .post('/api/login')
+        .send({
+          username: 'mluukkai',
+          password: 'salainen'
+        })
+        .expect(200)
+        .expect('Content-Type', /application\/json/)
+      const { body } = loginRequest;
+      const token = body.token;
+
       const newNote = {
         important: true
       };
 
       await api
         .post('/api/notes')
+        .set('Authorization', 'bearer ' + token)
         .send(newNote)
         .expect(400);
 
@@ -95,6 +121,7 @@ describe('when there is initially some notes saved', () => {
       expect(notesAtEnd).toHaveLength(helper.initialNotes.length);
     });
   });
+
   describe('deletion of note', () => {
     test('a note can be deleted', async () => {
       const notesAtStart = await helper.notesInDb();

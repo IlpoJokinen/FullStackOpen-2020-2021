@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
 const helper = require('./test_helper');
@@ -46,7 +47,7 @@ describe('when there is initially one user at db', () => {
       .post('/api/users')
       .send(newUser)
       .expect(200)
-      .expect('Content-Type', /application\/json/)
+      .expect('Content-Type', /application\/json/);
 
     const usersAtEnd = await helper.usersInDb();
     expect(usersAtEnd).toHaveLength(usersAtStart.length + 1);
@@ -54,4 +55,8 @@ describe('when there is initially one user at db', () => {
     const usernames = usersAtEnd.map(user => user.username);
     expect(usernames).toContain(newUser.username);
   });
+});
+
+afterAll(() => {
+  mongoose.connection.close();
 });

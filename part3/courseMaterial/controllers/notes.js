@@ -1,7 +1,10 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
+const jwt = require('jsonwebtoken');
 const notesRouter = require('express').Router();
 const Note = require('../models/note');
 const User = require('../models/user');
+const getTokenFrom = require('../utils/auth').getTokenFrom;
 
 notesRouter.get('/', async (req, res) => {
   const notes = await Note
@@ -42,10 +45,16 @@ notesRouter.delete('/:id', async (req, res) => {
 notesRouter.post('/', async (req, res) => {
   const body = req.body;
 
-  const user = await User.findById(body.userId);
+  const token = getTokenFrom(req);
+  const decodedToken = jwt.verify(token, process.env.SECRET);
+  if (!token || !decodedToken.id) {
+    return res.status(401).json({ error: 'token missing or invalid' });
+  }
+
+  const user = await User.findById(decodedToken.id);
   const note = new Note({
     content: body.content,
-    important: body.important || false,
+    important: body.important === undefined ? false : body.important,
     date: new Date(),
     user: user._id
   });
