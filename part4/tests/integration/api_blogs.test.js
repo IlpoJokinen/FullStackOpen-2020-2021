@@ -50,14 +50,28 @@ describe('When there is initially some blog data available', () => {
 
   describe('Adding a blog to the database', () => {
     test('Adding a blog to the database is succesful', async () => {
-      let newBlogObject = {
+      const loginRequest = await api
+        .post('/api/login')
+        .send({
+          username: 'masa',
+          password: 'salainen'
+        })
+        .expect(200)
+        .expect('Content-Type', /application\/json/);
+
+      const { body } = loginRequest;
+      const token = body.token;
+
+      const newBlogObject = {
         title: 'Amazing weather',
         author: 'Pekka Pouta',
         url: 'http://pekansää.fi',
         likes: 200
       };
+
       await api
         .post('/api/blogs')
+        .set('Authorization', 'bearer ' + token)
         .send(newBlogObject)
         .expect(201)
         .expect('Content-Type', /application\/json/);

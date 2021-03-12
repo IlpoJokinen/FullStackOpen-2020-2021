@@ -22,7 +22,10 @@ const errorHandler = (error, request, response, next) => {
     return response.status(409).send({ message: 'Parameter title should be at least 5 characters long' });
   } else if (error.name === 'ValidationError' && errPaths) {
     return response.status(400).send({ message: error.message });
-  } else {
+  } else if (error.name === 'JsonWebTokenError') {
+    return response.status(401).send({ message: 'Unauthorized request' });
+  }
+  else {
     next(error);
   }
 };

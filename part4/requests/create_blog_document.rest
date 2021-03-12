@@ -1,8 +1,9 @@
 POST  http://localhost:3003/api/blogs
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hc2EiLCJpZCI6IjYwNGI4NTA2YTJlYjk1NDEzMGMyM2ZkOCIsImlhdCI6MTYxNTU2MzkyMH0.LOcFVHxR0QgXbkfnMvfKwqyxT13X2uiBY_zDLXiO2MQ  
 
 {
-  "title": "Masan kastike part 2",
+  "title": "Masan kastike",
   "author": "Ilpo Jokinen",
   "url": "http://www.ilpojokinenfoodblog.me",
   "likes": 100

@@ -1,7 +1,10 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 const blogRouter = require('express').Router();
 const Blog = require('../models/blog');
 const User = require('../models/user');
+const getTokenFrom = require('../utils/auth').getTokenFrom;
+const jwt = require('jsonwebtoken');
 
 blogRouter.get('/', async (req, res) => {
   const blogs = await Blog
@@ -12,9 +15,17 @@ blogRouter.get('/', async (req, res) => {
 
 blogRouter.post('/', async (req, res) => {
   const { body } = req;
-  let posterOfBlog = await User.findOne({ username: 'masa' });
+
+  const token = getTokenFrom(req);
+  const decodedToken = jwt.verify(token, process.env.SECRET);
+
+  if (!token || !decodedToken.id) {
+    return res.status(401).json({ message: 'token missing or invalid' });
+  }
+
+  const user = await User.findById(decodedToken.id);
   let likes = !body.likes ? 0 : body.likes;
-  const blogObject = { ...body, likes: likes, user: posterOfBlog._id };
+  const blogObject = { ...body, likes: likes, user: user._id };
 
   const blog = new Blog(blogObject);
   const savedBlog = await blog.save();
