@@ -62,6 +62,54 @@ describe('When there are users in the database', () => {
       const usersAtEnd = await usersInDb();
       expect(usersAtEnd).toHaveLength(usersInStart.length + 1);
     });
+
+    test('Send proper error message if some of the request fields are null', async () => {
+      const usersInStart = await usersInDb();
+      const testUsers = [
+        {
+          password: 'password',
+          name: 'Testing User'
+        },
+        {
+          username: 'Test',
+          name: 'Testing User'
+        },
+        {
+          username: 'Test',
+          password: 'password',
+        }
+      ];
+      let request, errorMsg, expectedMsg;
+      // Username is mising
+      request = await api
+        .post('/api/users')
+        .send(testUsers[0])
+        .expect(400);
+
+      errorMsg = JSON.parse(request.text).message;
+      expectedMsg = 'User validation failed: username: Path `username` is required.';
+      expect(errorMsg).toEqual(expectedMsg);
+      // Password is mising
+
+      request = await api
+        .post('/api/users')
+        .send(testUsers[1])
+        .expect(400);
+
+      errorMsg = JSON.parse(request.text).message;
+      expectedMsg = 'User validation failed: password: Path `password` is required.';
+      expect(errorMsg).toEqual(expectedMsg);
+      // Name is mising
+
+      request = await api
+        .post('/api/users')
+        .send(testUsers[2])
+        .expect(400);
+
+      errorMsg = JSON.parse(request.text).message;
+      expectedMsg = 'User validation failed: name: Path `name` is required.';
+      expect(errorMsg).toEqual(expectedMsg);
+    });
   });
 });
 
