@@ -97,7 +97,7 @@ describe('When there are users in the database', () => {
         .expect(400);
 
       errorMsg = JSON.parse(request.text).message;
-      expectedMsg = 'User validation failed: password: Path `password` is required.';
+      expectedMsg = 'Password must be at least 3 characters long!';
       expect(errorMsg).toEqual(expectedMsg);
       // Name is mising
 
