@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 const blogRouter = require('express').Router();
-const { json } = require('express');
 const Blog = require('../models/blog');
 
 blogRouter.get('/', async (req, res) => {
