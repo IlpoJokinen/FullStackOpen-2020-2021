@@ -1,4 +1,3 @@
-/* eslint-disable quotes */
 const mongoose = require('mongoose');
 
 const userSchema = mongoose.Schema({
@@ -9,16 +8,20 @@ const userSchema = mongoose.Schema({
     required: true,
     unique: true
   },
-  password: {
+  passwordHash: {
     type: String,
-    minlength: 3,
     required: true
   },
   name: {
     type: String,
     required: true
   },
-  blogs: [{ type: mongoose.SchemaTypes.ObjectId, ref: "Blog" }]
+  blogs: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Blog'
+    }
+  ]
 });
 
 userSchema.set('toJSON', {
@@ -30,4 +33,4 @@ userSchema.set('toJSON', {
   }
 });
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = mongoose.model('User', userSchema);

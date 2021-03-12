@@ -2,7 +2,7 @@ POST  http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-  "title": "Masan kastike",
+  "title": "Masan kastike part 2",
   "author": "Ilpo Jokinen",
   "url": "http://www.ilpojokinenfoodblog.me",
   "likes": 100
