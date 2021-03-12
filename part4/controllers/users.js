@@ -1,3 +1,4 @@
+/* eslint-disable quotes */
 const usersRouter = require('express').Router();
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
@@ -21,9 +22,17 @@ usersRouter.post('/', async (request, response) => {
   response.json(savedUser);
 });
 
-usersRouter.get('/', async (request, response) => {
-  const usersInDb = await User.find({});
-  response.send(usersInDb);
+usersRouter.get('/', async (request, response, next) => {
+  try {
+    const users = await User.find({}).populate("blogs", {
+      title: 1,
+      url: 1,
+      author: 1,
+    });
+    response.json(users);
+  } catch (err) {
+    next(err);
+  }
 });
 
 module.exports = usersRouter;

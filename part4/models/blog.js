@@ -17,7 +17,13 @@ const blogSchema = mongoose.Schema({
   },
   likes: {
     type: Number,
+  },
+  user:
+  {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
   }
+
 });
 blogSchema.plugin(uniqueValidator, { message: 'A blog with the same title is already in the database' });
 

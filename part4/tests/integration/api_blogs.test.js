@@ -5,6 +5,7 @@ const api = supertest(app);
 const Blog = require('../../models/blog');
 const initialBlogs = require('../data/blogData').blogs;
 const blogsInDb = require('./test_helper').blogsInDb;
+const latestBlogInDb = require('./test_helper').latestBlogInDb;
 
 describe('When there is initially some blog data available', () => {
   beforeEach(async () => {
@@ -61,12 +62,13 @@ describe('When there is initially some blog data available', () => {
         .expect(201)
         .expect('Content-Type', /application\/json/);
 
-      const { body } = await api.get('/api/blogs');
-      const titlesOfResponse = body.map(blog => blog.title);
-
       const blogsInDbAfterPost = await blogsInDb();
+      const [latestBlogPosted] = await latestBlogInDb();
+      const titlesOfResponse = blogsInDbAfterPost.map(blog => blog.title);
+
       expect(blogsInDbAfterPost).toHaveLength(initialBlogs.length + 1);
       expect(titlesOfResponse).toContain('Amazing weather');
+      expect(latestBlogPosted).toHaveProperty('user');
     });
 
     test('Too short title will cause an error', async () => {

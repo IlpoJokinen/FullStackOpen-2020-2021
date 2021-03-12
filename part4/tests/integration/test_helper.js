@@ -7,6 +7,9 @@ const blogsInDb = async () => {
   return blogs.map(blog => blog.toJSON());
 };
 
+const latestBlogInDb = async () => await Blog.find().sort({ _id: -1 }).limit(1);
+
+
 const usersInDb = async () => {
   const users = await User.find({});
   return users.map(user => user.toJSON());
@@ -14,5 +17,6 @@ const usersInDb = async () => {
 
 module.exports = {
   blogsInDb,
-  usersInDb
+  usersInDb,
+  latestBlogInDb
 };
