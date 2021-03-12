@@ -20,4 +20,9 @@ usersRouter.post('/', async (request, response) => {
   response.json(savedUser);
 });
 
+usersRouter.get('/', async (request, response) => {
+  const usersInDb = await User.find({});
+  response.send(usersInDb);
+});
+
 module.exports = usersRouter;

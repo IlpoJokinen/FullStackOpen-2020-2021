@@ -111,6 +111,19 @@ describe('When there are users in the database', () => {
       expect(errorMsg).toEqual(expectedMsg);
     });
   });
+
+  describe('Fetching the users to the server', () => {
+    test('Get request should output all user as json', async () => {
+      const users = await usersInDb();
+      const request = await api
+        .get('/api/users')
+        .expect(200)
+        .expect('Content-Type', /application\/json/);
+
+      expect(request.body).toHaveLength(users.length);
+      expect(request.body).toEqual(users);
+    });
+  });
 });
 
 afterAll(() => {
