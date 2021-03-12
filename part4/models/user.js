@@ -3,8 +3,8 @@ const mongoose = require('mongoose');
 const userSchema = mongoose.Schema({
   username: {
     type: String,
-    minLenght: 3,
-    maxLength: 40,
+    minlength: 3,
+    maxlength: 40,
     required: true,
     unique: true
   },
