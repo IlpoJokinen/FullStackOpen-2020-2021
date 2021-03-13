@@ -1,10 +1,10 @@
 POST  http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hc2EiLCJpZCI6IjYwNGI4NTA2YTJlYjk1NDEzMGMyM2ZkOCIsImlhdCI6MTYxNTU2NDg4MH0.CEAqZPOq1jfZNzVKOoiDO-YiZTXsn9GjJVZoL_GF6mU
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNlcGkiLCJpZCI6IjYwNGM5YjNlYzA3ZTdlMzU2MGZmYmI2YyIsImlhdCI6MTYxNTYzMzMzNX0.w8vH5Pb2yofTmaqgMqgiWZ51OdFm0XFibjaVny-j-74
 
 {
-  "title": "Masan kastike 2",
-  "author": "Ilpo Jokinen",
-  "url": "http://www.ilpojokinenfoodblog.me",
-  "likes": 100
+  "title": "Sijoitusblogi",
+  "author": "Seppo Saario",
+  "url": "http://www.seponsijoituskoulu.fi",
+  "likes": 10
 }

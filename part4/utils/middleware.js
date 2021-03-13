@@ -23,9 +23,8 @@ const errorHandler = (error, request, response, next) => {
   } else if (error.name === 'ValidationError' && errPaths) {
     return response.status(400).send({ message: error.message });
   } else if (error.name === 'JsonWebTokenError') {
-    return response.status(401).send({ message: 'Unauthorized request' });
-  }
-  else {
+    return response.status(401).send({ message: 'invalid signature' });
+  } else {
     next(error);
   }
 };
