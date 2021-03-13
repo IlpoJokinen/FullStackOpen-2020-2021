@@ -151,6 +151,22 @@ describe('When there is initially some blog data available', () => {
 
       expect(JSON.parse(request.text).message).toEqual('Blog validation failed: title: A blog with the same title is already in the database');
     });
+
+    test('Addition of a blog without proper token will correspond with 401 and correct error message', async () => {
+      const newBlogObject = {
+        title: 'Masan soossi',
+        author: 'MVP',
+        url: 'http://soossikuningas.fi',
+        likes: 200
+      };
+
+      const request = await api
+        .post('/api/blogs')
+        .send(newBlogObject)
+        .expect(401);
+
+      expect(JSON.parse(request.text).message).toEqual('invalid signature');
+    });
   });
   describe('A blog document can be deleted', () => {
     test('User can delete users own posts', async () => {
