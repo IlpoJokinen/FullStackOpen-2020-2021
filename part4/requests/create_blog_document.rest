@@ -1,10 +1,10 @@
 POST  http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNlcGkiLCJpZCI6IjYwNGM5YjNlYzA3ZTdlMzU2MGZmYmI2YyIsImlhdCI6MTYxNTYzMzMzNX0.w8vH5Pb2yofTmaqgMqgiWZ51OdFm0XFibjaVny-j-74
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNlcGkiLCJpZCI6IjYwNGM5YjNlYzA3ZTdlMzU2MGZmYmI2YyIsImlhdCI6MTYxNTYzNzAwMX0.pRxKFjD1XtRtm1GnYralkd0LGhpcfqZhb_b1ZkJwnvE
 
 {
-  "title": "Sijoitusblogi",
+  "title": "Sepon sijoitukset",
   "author": "Seppo Saario",
-  "url": "http://www.seponsijoituskoulu.fi",
-  "likes": 10
+  "url": "http://www.sijoitusblogi.fi",
+  "likes": 5040
 }

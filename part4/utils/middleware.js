@@ -1,4 +1,7 @@
+/* eslint-disable no-undef */
 const logger = require('./logger');
+const jwt = require('jsonwebtoken');
+const Blog = require('../models/blog');
 
 const unknownEndpoint = (req, res) => {
   res.status(400).send({ error: 'unknown endpoint' });
@@ -38,10 +41,22 @@ const tokenExtractor = (request, response, next) => {
   next();
 };
 
+const userExtractor = async (request, response, next) => {
+  const { id } = jwt.verify(request.token, process.env.SECRET);
+  request.user = id;
+  if (request.params.id) {
+    const blog = await Blog.findById(request.params.id);
+    if (blog.user && blog.user.toString() === id.toString()) {
+      request.user = blog.user.toString();
+    }
+  }
+  next();
+};
 
 module.exports = {
   unknownEndpoint,
   requestLogger,
   errorHandler,
-  tokenExtractor
+  tokenExtractor,
+  userExtractor
 };
