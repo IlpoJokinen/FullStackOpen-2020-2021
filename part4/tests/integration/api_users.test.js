@@ -5,11 +5,13 @@ const api = supertest(app);
 const User = require('../../models/user');
 const initialUsers = require('../data/userData');
 const usersInDb = require('./test_helper').usersInDb;
+const createHashPasswords = require('./test_helper').createHashPasswords;
 
 describe('When there are users in the database', () => {
   beforeAll(async () => {
     await User.deleteMany({});
-    await User.insertMany(initialUsers);
+    const usersWithHashedPasswords = await createHashPasswords(initialUsers);
+    await User.insertMany(usersWithHashedPasswords);
   });
 
   describe('Saving a user object to MongoDB', () => {
@@ -64,7 +66,6 @@ describe('When there are users in the database', () => {
     });
 
     test('Send proper error message if some of the request fields are null', async () => {
-      const usersInStart = await usersInDb();
       const testUsers = [
         {
           password: 'password',

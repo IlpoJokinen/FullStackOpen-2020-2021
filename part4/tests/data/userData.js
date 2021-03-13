@@ -1,22 +1,22 @@
 const initialUsers = [
   {
     username: 'Sepi',
-    password: '12930rnkjdsbfnq2+ä0rjep1äne21en2p12e9',
+    password: 'salasana',
     name: 'Seppo Saario'
   },
   {
     username: 'Masa',
-    password: 'dsäfpsefhå+30ä9phfnwoibfaå0f9ehqbUBÖAFÖONC',
+    password: 'bernaise',
     name: 'Matti Hälvä'
   },
   {
     username: 'Dopi',
-    password: 'fisdåfhsae+fu23aäpiwezåfh0we93hirwoenfäoseinfä',
+    password: 'mestari',
     name: 'Topi Yläsarja'
   },
   {
     username: 'IlpJok',
-    password: 'elfbsöoefihseäpnfsefhse0f9i3nnf3f',
+    password: 'aurinkoinenPäivä',
     name: 'Ilpo Jokinen'
   },
 ];

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const mongoose = require('mongoose');
 const supertest = require('supertest');
 const app = require('../../app');
@@ -6,6 +7,8 @@ const Blog = require('../../models/blog');
 const initialBlogs = require('../data/blogData').blogs;
 const blogsInDb = require('./test_helper').blogsInDb;
 const latestBlogInDb = require('./test_helper').latestBlogInDb;
+const getTokenFromLogIn = require('./test_helper').getTokenFromLogIn;
+const jwt = require('jsonwebtoken');
 
 describe('When there is initially some blog data available', () => {
   beforeEach(async () => {
@@ -50,22 +53,11 @@ describe('When there is initially some blog data available', () => {
 
   describe('Adding a blog to the database', () => {
     test('Adding a blog to the database is succesful', async () => {
-      const loginRequest = await api
-        .post('/api/login')
-        .send({
-          username: 'masa',
-          password: 'salainen'
-        })
-        .expect(200)
-        .expect('Content-Type', /application\/json/);
-
-      const { body } = loginRequest;
-      const token = body.token;
-
+      const token = await getTokenFromLogIn();
       const newBlogObject = {
-        title: 'Amazing weather',
-        author: 'Pekka Pouta',
-        url: 'http://pekansää.fi',
+        title: 'Masan soossi',
+        author: 'MVP',
+        url: 'http://soossikuningas.fi',
         likes: 200
       };
 
@@ -81,19 +73,23 @@ describe('When there is initially some blog data available', () => {
       const titlesOfResponse = blogsInDbAfterPost.map(blog => blog.title);
 
       expect(blogsInDbAfterPost).toHaveLength(initialBlogs.length + 1);
-      expect(titlesOfResponse).toContain('Amazing weather');
+      expect(titlesOfResponse).toContain('Masan soossi');
       expect(latestBlogPosted).toHaveProperty('user');
     });
 
     test('Too short title will cause an error', async () => {
+      const token = await getTokenFromLogIn();
+
       let newBlogObject = {
         title: 'LOL',
-        author: 'Pekka Pouta',
-        url: 'http://pekansää.fi',
+        author: 'Matti',
+        url: 'http://masansivut.fi',
         likes: 200
       };
+
       const request = await api
         .post('/api/blogs')
+        .set('Authorization', 'bearer ' + token)
         .send(newBlogObject);
 
       expect(request.status).toBe(409);
@@ -102,6 +98,8 @@ describe('When there is initially some blog data available', () => {
     });
 
     test('If title is missing, should correspond with proper error message and status code', async () => {
+      const token = await getTokenFromLogIn();
+
       let newBlogObject = {
         author: 'Pekka Pouta',
         url: 'http://pekansää.fi',
@@ -109,6 +107,7 @@ describe('When there is initially some blog data available', () => {
       };
       const request = await api
         .post('/api/blogs')
+        .set('Authorization', 'bearer ' + token)
         .send(newBlogObject)
         .expect(400);
 
@@ -116,6 +115,8 @@ describe('When there is initially some blog data available', () => {
     });
 
     test('If url is missing, should correspond with proper error message and status code', async () => {
+      const token = await getTokenFromLogIn();
+
       let newBlogObject = {
         title: 'Uusi säätiedoite',
         author: 'Pekka Pouta',
@@ -123,6 +124,7 @@ describe('When there is initially some blog data available', () => {
       };
       const request = await api
         .post('/api/blogs')
+        .set('Authorization', 'bearer ' + token)
         .send(newBlogObject)
         .expect(400);
 
@@ -138,8 +140,12 @@ describe('When there is initially some blog data available', () => {
         url: 'http://ilposite.org/blogs',
         likes: 0
       };
+
+      const token = await getTokenFromLogIn();
+
       const request = await api
         .post('/api/blogs')
+        .set('Authorization', 'bearer ' + token)
         .send(newBlogObject)
         .expect(400);
 
@@ -147,21 +153,41 @@ describe('When there is initially some blog data available', () => {
     });
   });
   describe('A blog document can be deleted', () => {
-    test('Deleting a blog from the database is succesfull', async () => {
-      const blogsAtStart = await blogsInDb();
+    test('User can delete users own posts', async () => {
+      const token = await getTokenFromLogIn();
+
       await api
-        .delete(`/api/blogs/${blogsAtStart[0].id}`)
+        .post('/api/blogs')
+        .set('Authorization', 'bearer ' + token)
+        .send({
+          title: 'Masan blogi',
+          author: 'Masa',
+          url: 'http://www.masaruokkii.com',
+          likes: 0
+        })
+        .expect(201)
+        .expect('Content-Type', /application\/json/);
+
+      const blogsInDatabase = await blogsInDb();
+      const blogToRemove = blogsInDatabase[blogsInDatabase.length - 1];
+      console.log('BLOG', blogToRemove);
+      await api
+        .delete(`/api/blogs/${blogToRemove.id}`)
+        .set('Authorization', 'bearer ' + token)
         .expect(204);
 
       const blogsAfterTheDeletion = await blogsInDb();
-      expect(blogsAfterTheDeletion).toHaveLength(initialBlogs.length - 1);
-      expect(blogsAfterTheDeletion).not.toContain(blogsAtStart[0]);
+      expect(blogsAfterTheDeletion).toHaveLength(blogsInDatabase.length - 1);
+      expect(blogsAfterTheDeletion).not.toContain(blogToRemove);
     });
 
     test('Deleting an non existing blog causes 400 status invalid id', async () => {
+      const token = await getTokenFromLogIn();
+
       const id = '21212ab65trZqYF5671222';
       const request = await api
         .delete(`/api/blogs/${id}`)
+        .set('Authorization', 'bearer ' + token)
         .expect(400);
       const blogsAtEnd = await blogsInDb();
       expect(blogsAtEnd).toHaveLength(initialBlogs.length);
