@@ -3,13 +3,17 @@ import Note from './components/Note'
 import Notification from './components/Notification'
 import Footer from './components/Footer'
 import AddNote from './components/AddNote'
-
+import LoginForm from './components/LoginForm'
 import noteService from './services/notes'
+import loginService from './services/login'
 
 const App = () => {
     const [notes, setNotes] = useState()
     const [newNote, setNewNote] = useState('')
     const [errorMessage, setErrorMessage] = useState(null)
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
+    const [user, setUser] = useState(null)
 
     useEffect(() => {
         noteService
@@ -19,6 +23,15 @@ const App = () => {
                 setNotes(copy)
                 return copy
             })
+    }, [])
+
+    useEffect(() => {
+        const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser');
+        if (loggedUserJSON) {
+            const user = JSON.parse(loggedUserJSON);
+            setUser(user);
+            noteService.setToken(user.token);
+        }
     }, [])
 
     const toggleImportanceOf = (id) => {
@@ -54,11 +67,29 @@ const App = () => {
                 setNewNote('')
             })
     }
-    console.log(notes)
+
     return (
         <div>
             <h1>Notes</h1>
             <Notification message={errorMessage} />
+            {user === null
+                ? <LoginForm
+                    username={username}
+                    password={password}
+                    setUsername={setUsername}
+                    setPassword={setPassword}
+                    setUser={setUser}
+                    setErrorMessage={setErrorMessage}
+                /> :
+                <div>
+                    <div>
+                        <p>{user.name} logged in</p>
+                        <button onClick={() => loginService.logout(setUser)}>Log out</button>
+                    </div>
+                    <hr />
+                    <AddNote setNewNote={setNewNote} addNote={addNote} newNote={newNote} />
+                </div>
+            }
             {notes && (
                 <ul>
                     {notes.map(note =>
@@ -66,7 +97,6 @@ const App = () => {
                     )}
                 </ul>
             )}
-            <AddNote setNewNote={setNewNote} addNote={addNote} newNote={newNote} />
             <Footer />
         </div>
     )
