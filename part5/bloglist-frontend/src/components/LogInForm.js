@@ -1,6 +1,6 @@
 import authService from '../services/auth';
 
-const loginForm = ({ username, password, setUsername, setPassword, setUser, setErrorMsg }) => {
+const loginForm = ({ username, password, setUsername, setPassword, setUser, setText }) => {
 
   const logIn = async (event) => {
     event.preventDefault();
@@ -12,9 +12,12 @@ const loginForm = ({ username, password, setUsername, setPassword, setUser, setE
       setUser(user);
       setUsername('');
       setPassword('');
-      setErrorMsg('');
+      setText('');
     } catch (exeption) {
-      setErrorMsg('wrong credentials');
+      setText({ message: 'Wrong credentials', status: 'error' });
+      setTimeout(() => {
+        setText(null);
+      }, 5000);
     }
   };
 

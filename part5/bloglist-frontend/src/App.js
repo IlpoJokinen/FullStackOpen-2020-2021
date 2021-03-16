@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Blog from './components/Blog';
 import LoginForm from './components/LogInForm';
 import AddBlog from './components/AddBlog';
+import InfoBox from './UI/InfoBox';
 
 import blogService from './services/blogs';
 import authService from './services/auth';
@@ -12,7 +13,7 @@ const App = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
+  const [text, setText] = useState(null);
   const [newBlog, setNewBlog] = useState({});
 
   useEffect(() => {
@@ -36,9 +37,21 @@ const App = () => {
   const createBlogPost = async (event) => {
     event.preventDefault();
 
-    const createdBlog = await blogService.create(newBlog);
-    setNewBlog({});
-    setBlogs(blogs.concat(createdBlog));
+    try {
+      const createdBlog = await blogService.create(newBlog);
+      setNewBlog({});
+      setBlogs(blogs.concat(createdBlog));
+      setText({ message: `A new blog ${createdBlog.title} by ${createdBlog.author} added`, status: 'success' });
+      setTimeout(() => {
+        setText(null);
+      }, 5000);
+    } catch (error) {
+      console.log(error)
+      setText({ message: `${error.response.data.message}`, status: 'error' });
+      setTimeout(() => {
+        setText(null);
+      }, 5000);
+    }
   };
 
   return (
@@ -56,11 +69,11 @@ const App = () => {
           setUsername={setUsername}
           setPassword={setPassword}
           setUser={setUser}
-          setErrorMsg={setErrorMsg}
+          setText={setText}
         />
       }
-      {errorMsg && (
-        <p className="paragraph">{errorMsg}</p>
+      {text && (
+        <InfoBox text={text} />
       )}
       {user && (
         <div>

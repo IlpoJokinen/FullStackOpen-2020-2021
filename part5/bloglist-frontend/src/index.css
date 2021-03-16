@@ -8,6 +8,28 @@
   margin-bottom: 15px;
 }
 
+.block--error {
+  padding: 10px;
+  width: 50%;
+  background-image: linear-gradient(to right, rgba(240, 52, 52, 1),rgba(224, 130, 131, 0.2));
+  border-radius: 10px;
+}
+
+.block--error h3 {
+  color: white;
+}
+
+.block--success {
+  padding: 10px;
+  width: 50%;
+  background-image: linear-gradient(to right, rgba(38, 166, 91, 1),rgba(200, 247, 197, 0.2));
+  border-radius: 10px;
+}
+
+.block--success h3 {
+  color: white;
+}
+
 .blogPost {
   border: solid 1px black;
   border-radius: 10px;
