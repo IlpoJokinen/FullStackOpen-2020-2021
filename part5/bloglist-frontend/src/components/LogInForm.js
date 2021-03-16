@@ -19,7 +19,7 @@ const loginForm = ({ username, password, setUsername, setPassword, setUser, setE
   };
 
   return (
-    <div className="loginForm u-margin-bottom-medium">
+    <div className="block u-margin-bottom-medium">
       <h2 className="heading-secondary u-margin-bottom-medium">log in to application</h2>
       <form onSubmit={logIn}>
         <div className="inputGroup">

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
+
 import Blog from './components/Blog';
 import LoginForm from './components/LogInForm';
+import AddBlog from './components/AddBlog';
 
 import blogService from './services/blogs';
 import authService from './services/auth';
@@ -11,11 +13,14 @@ const App = () => {
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [newBlog, setNewBlog] = useState({});
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs(blogs)
-    );
+    const fetchBlogs = async () => {
+      const blogsFromDatabase = await blogService.getAll();
+      setBlogs(blogsFromDatabase);
+    };
+    fetchBlogs();
   }, []);
 
   useEffect(() => {
@@ -27,7 +32,14 @@ const App = () => {
     }
   }, [])
 
-  console.log('user', user);
+
+  const createBlogPost = async (event) => {
+    event.preventDefault();
+
+    const createdBlog = await blogService.create(newBlog);
+    setNewBlog({});
+    setBlogs(blogs.concat(createdBlog));
+  };
 
   return (
     <div className="section-block">
@@ -52,10 +64,19 @@ const App = () => {
       )}
       {user && (
         <div>
-          <h2 className="heading-secondary u-margin-bottom-medium">Blogs</h2>
-          {blogs.map((blog, index) =>
-            <Blog key={blog.id} blog={blog} index={index} />
-          )}
+          <div>
+            <AddBlog
+              newBlog={newBlog}
+              setNewBlog={setNewBlog}
+              createBlogPost={createBlogPost}
+            />
+          </div>
+          <div className="block">
+            <h2 className="heading-secondary u-margin-bottom-medium">Blogs</h2>
+            {blogs.map((blog, index) =>
+              <Blog key={blog.id} blog={blog} index={index} />
+            )}
+          </div>
         </div>
       )}
     </div>
