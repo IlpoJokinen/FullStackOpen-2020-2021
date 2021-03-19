@@ -1,10 +1,19 @@
-const addBlog = ({ newBlog, setNewBlog, createBlogPost }) => {
+import React, { useState } from 'react';
 
+const AddBlog = ({ createBlogPost }) => {
+  const [newBlog, setNewBlog] = useState({});
+
+  const addBlog = async (event) => {
+    event.preventDefault();
+
+    await createBlogPost(newBlog);
+    setNewBlog('');
+  }
 
   return (
     <div className="block">
       <h2 className="heading-secondary u-margin-bottom-medium">Create new blog</h2>
-      <form onSubmit={createBlogPost}>
+      <form onSubmit={addBlog}>
         <div className="inputGroup">
           <p className="paragraph">Title </p>
           <input
@@ -36,4 +45,4 @@ const addBlog = ({ newBlog, setNewBlog, createBlogPost }) => {
 
 };
 
-export default addBlog;
+export default AddBlog;

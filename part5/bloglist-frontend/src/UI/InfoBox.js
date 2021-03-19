@@ -1,9 +1,9 @@
-const infoBox = ({ text }) => {
+const infoBox = ({ infoText }) => {
 
   return (
-    <div className={text.status === 'error' ? "block--error" : "block--success"}>
+    <div className={infoText.status === 'error' ? "block--error" : "block--success"}>
       <h3>
-        {text.message}
+        {infoText.message}
       </h3>
     </div>
   );

@@ -14,8 +14,7 @@ const App = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
-  const [text, setText] = useState(null);
-  const [newBlog, setNewBlog] = useState({});
+  const [infoText, setInfoText] = useState(null);
 
   const blogFormRef = useRef();
 
@@ -37,35 +36,35 @@ const App = () => {
   }, [])
 
 
-  const createBlogPost = async (event) => {
-    event.preventDefault();
+  const createBlogPost = async newBlog => {
+    blogFormRef.current.toggleVisibility();
 
     try {
-      blogFormRef.current.toggleVisibility();
       const createdBlog = await blogService.create(newBlog);
-      setNewBlog({});
       setBlogs(blogs.concat(createdBlog));
-      setText({ message: `A new blog ${createdBlog.title} by ${createdBlog.author} added`, status: 'success' });
+      setInfoText({ message: `A new blog ${createdBlog.title} by ${createdBlog.author} added`, status: 'success' });
       setTimeout(() => {
-        setText(null);
+        setInfoText(null);
       }, 5000);
     } catch (error) {
       console.log(error)
-      setText({ message: `${error.response.data.message}`, status: 'error' });
+      setInfoText({ message: `${error.response.data.message}`, status: 'error' });
       setTimeout(() => {
-        setText(null);
+        setInfoText(null);
       }, 5000);
     }
   };
 
   const blogForm = () => (
     <Togglable buttonLabel="new blog" ref={blogFormRef}>
-      <AddBlog
-        newBlog={newBlog}
-        setNewBlog={setNewBlog}
-        createBlogPost={createBlogPost}
-      />
+      <AddBlog createBlogPost={createBlogPost} />
     </Togglable>
+  );
+
+  const blogList = () => (
+    blogs.map((blog, index) =>
+      <Blog key={blog.id} blog={blog} index={index} />
+    )
   );
 
   return (
@@ -83,20 +82,18 @@ const App = () => {
           setUsername={setUsername}
           setPassword={setPassword}
           setUser={setUser}
-          setText={setText}
+          setInfoText={setInfoText}
         />
       }
-      {text && (
-        <InfoBox text={text} />
+      {infoText && (
+        <InfoBox infoText={infoText} />
       )}
       {user && (
         <div>
           {blogForm()}
           <div className="block">
             <h2 className="heading-secondary u-margin-bottom-medium">Blogs</h2>
-            {blogs.map((blog, index) =>
-              <Blog key={blog.id} blog={blog} index={index} />
-            )}
+            {blogList()}
           </div>
         </div>
       )}
