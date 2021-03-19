@@ -1,7 +1,8 @@
+import React from 'react';
 import loginService from '../services/login';
 import noteService from '../services/notes';
 
-const loginForm = ({ username, password, setUsername, setPassword, setErrorMessage, setUser }) => {
+const LoginForm = ({ username, password, setUsername, setPassword, setErrorMessage, setUser }) => {
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -32,7 +33,7 @@ const loginForm = ({ username, password, setUsername, setPassword, setErrorMessa
       <form onSubmit={handleLogin}>
         <div>
           username
-    <input
+          <input
             type="text"
             value={username}
             name="Username"
@@ -41,7 +42,7 @@ const loginForm = ({ username, password, setUsername, setPassword, setErrorMessa
         </div>
         <div>
           password
-    <input
+          <input
             type="password"
             value={password}
             name="Password"
@@ -54,4 +55,4 @@ const loginForm = ({ username, password, setUsername, setPassword, setErrorMessa
   );
 };
 
-export default loginForm;
+export default LoginForm;

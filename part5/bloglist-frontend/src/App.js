@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
-import Blog from './components/Blog';
-import LoginForm from './components/LogInForm';
 import AddBlog from './components/AddBlog';
+import Blog from './components/Blog';
 import InfoBox from './UI/InfoBox';
+import LoginForm from './components/LogInForm';
+import Togglable from './components/Togglable';
 
 import blogService from './services/blogs';
 import authService from './services/auth';
@@ -15,6 +16,8 @@ const App = () => {
   const [user, setUser] = useState(null);
   const [text, setText] = useState(null);
   const [newBlog, setNewBlog] = useState({});
+
+  const blogFormRef = useRef();
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -38,6 +41,7 @@ const App = () => {
     event.preventDefault();
 
     try {
+      blogFormRef.current.toggleVisibility();
       const createdBlog = await blogService.create(newBlog);
       setNewBlog({});
       setBlogs(blogs.concat(createdBlog));
@@ -53,6 +57,16 @@ const App = () => {
       }, 5000);
     }
   };
+
+  const blogForm = () => (
+    <Togglable buttonLabel="new blog" ref={blogFormRef}>
+      <AddBlog
+        newBlog={newBlog}
+        setNewBlog={setNewBlog}
+        createBlogPost={createBlogPost}
+      />
+    </Togglable>
+  );
 
   return (
     <div className="section-block">
@@ -77,13 +91,7 @@ const App = () => {
       )}
       {user && (
         <div>
-          <div>
-            <AddBlog
-              newBlog={newBlog}
-              setNewBlog={setNewBlog}
-              createBlogPost={createBlogPost}
-            />
-          </div>
+          {blogForm()}
           <div className="block">
             <h2 className="heading-secondary u-margin-bottom-medium">Blogs</h2>
             {blogs.map((blog, index) =>

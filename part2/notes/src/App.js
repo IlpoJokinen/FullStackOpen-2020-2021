@@ -1,19 +1,23 @@
-import React, { useState, useEffect } from 'react'
-import Note from './components/Note'
-import Notification from './components/Notification'
-import Footer from './components/Footer'
-import AddNote from './components/AddNote'
-import LoginForm from './components/LoginForm'
-import noteService from './services/notes'
-import loginService from './services/login'
+import React, { useState, useEffect, useRef } from 'react';
+
+import AddNote from './components/AddNote';
+import Footer from './components/Footer';
+import LoginForm from './components/LoginForm';
+import Note from './components/Note';
+import Notification from './components/Notification';
+import Togglable from './components/Togglable';
+
+import loginService from './services/login';
+import noteService from './services/notes';
 
 const App = () => {
-    const [notes, setNotes] = useState()
-    const [newNote, setNewNote] = useState('')
-    const [errorMessage, setErrorMessage] = useState(null)
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
-    const [user, setUser] = useState(null)
+    const [notes, setNotes] = useState();
+    const [errorMessage, setErrorMessage] = useState(null);
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [user, setUser] = useState(null);
+
+    const noteFormRef = useRef();
 
     useEffect(() => {
         noteService
@@ -53,41 +57,48 @@ const App = () => {
             })
     }
 
-    const addNote = event => {
-        event.preventDefault()
-        const noteObject = {
-            content: newNote,
-            date: new Date().toISOString(),
-            important: Math.random() > 0.5,
-        }
+    const addNote = noteObject => {
+        noteFormRef.current.toggleVisibility();
         noteService
             .create(noteObject)
             .then(returnedNote => {
                 setNotes(notes.concat(returnedNote))
-                setNewNote('')
             })
     }
+
+    const loginForm = () => (
+        <Togglable buttonLabel='login'>
+            <LoginForm
+                username={username}
+                password={password}
+                setUsername={setUsername}
+                setPassword={setPassword}
+                setUser={setUser}
+                setErrorMessage={setErrorMessage}
+            />
+        </Togglable>
+    );
+
+    const noteForm = () => (
+        <Togglable buttonLabel="new note" ref={noteFormRef}>
+            <AddNote createNote={addNote} />
+        </Togglable>
+    );
 
     return (
         <div>
             <h1>Notes</h1>
             <Notification message={errorMessage} />
             {user === null
-                ? <LoginForm
-                    username={username}
-                    password={password}
-                    setUsername={setUsername}
-                    setPassword={setPassword}
-                    setUser={setUser}
-                    setErrorMessage={setErrorMessage}
-                /> :
+                ? loginForm()
+                :
                 <div>
                     <div>
                         <p>{user.name} logged in</p>
                         <button onClick={() => loginService.logout(setUser)}>Log out</button>
                     </div>
                     <hr />
-                    <AddNote setNewNote={setNewNote} addNote={addNote} newNote={newNote} />
+                    {noteForm()}
                 </div>
             }
             {notes && (

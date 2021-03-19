@@ -5,7 +5,11 @@
 }
 
 .block {
-  margin-bottom: 15px;
+  padding: 10px;
+}
+
+.block :last-child {
+  margin-bottom: 20px;
 }
 
 .block--error {
