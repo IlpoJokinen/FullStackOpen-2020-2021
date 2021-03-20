@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const Blog = require('../models/blog');
 
 const unknownEndpoint = (req, res) => {
-  res.status(400).send({ error: 'unknown endpoint' });
+  res.status(400).send({ message: 'unknown endpoint' });
 };
 
 const requestLogger = (request, response, next) => {
@@ -17,7 +17,6 @@ const requestLogger = (request, response, next) => {
 
 const errorHandler = (error, request, response, next) => {
   const errPaths = error.errors ? Object.values(error.errors).map(el => el.path) : null;
-
   if (error.name === 'CastError') {
     return response.status(400).send({ message: 'invalid id' });
   }

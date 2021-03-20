@@ -19,6 +19,11 @@ const create = async newBlog => {
   };
   const response = await axios.post(baseUrl, newBlog, config);
   return response.data;
-}
+};
 
-export default { getAll, setToken, create };
+const updateOneBlog = async updatedBlog => {
+  const response = await axios.put(`${baseUrl}/${updatedBlog.id}`, updatedBlog);
+  return response.data;
+};
+
+export default { getAll, setToken, create, updateOneBlog };

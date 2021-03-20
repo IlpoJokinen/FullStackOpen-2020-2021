@@ -47,13 +47,29 @@ const App = () => {
         setInfoText(null);
       }, 5000);
     } catch (error) {
-      console.log(error)
       setInfoText({ message: `${error.response.data.message}`, status: 'error' });
       setTimeout(() => {
         setInfoText(null);
       }, 5000);
     }
   };
+
+  const updateBlog = async updatedBlog => {
+    try {
+      await blogService.updateOneBlog(updatedBlog);
+      let updatedBLogList = blogs.map(blog => blog.id === updatedBlog.id ? { ...blog, likes: blog.likes + 1 } : blog);
+      setBlogs(updatedBLogList);
+      setInfoText({ message: `Liked blog ${updatedBlog.title}!`, status: 'success' });
+      setTimeout(() => {
+        setInfoText(null);
+      }, 5000);
+    } catch (error) {
+      setInfoText({ message: `${error.response.data.message}`, status: 'error' });
+      setTimeout(() => {
+        setInfoText(null);
+      }, 5000);
+    }
+  }
 
   const blogForm = () => (
     <Togglable buttonLabel="new blog" ref={blogFormRef}>
@@ -63,7 +79,7 @@ const App = () => {
 
   const blogList = () => (
     blogs.map((blog, index) =>
-      <Blog key={blog.id} blog={blog} index={index} />
+      <Blog key={blog.id} blog={blog} index={index} update={updateBlog} />
     )
   );
 
