@@ -74,15 +74,31 @@ const App = () => {
     }
   }
 
+  const removeBlog = async blogToBeRemoved => {
+    const confirmation = window.confirm(`Remove ${blogToBeRemoved.title} by ${blogToBeRemoved.author}?`);
+    if (confirmation) {
+      try {
+        await blogService.removeBlog(blogToBeRemoved.id);
+        let updatedBLogList = blogs.filter(blog => blog.id !== blogToBeRemoved.id);
+        setBlogs(updatedBLogList);
+      } catch (error) {
+        setInfoText({ message: `${error.response.data.message}`, status: 'error' });
+        setTimeout(() => {
+          setInfoText(null);
+        }, 5000);
+      }
+    }
+  };
+
   const blogForm = () => (
-    <Togglable buttonLabel="new blog" ref={blogFormRef}>
+    <Togglable buttonLabel="New blog" ref={blogFormRef}>
       <AddBlog createBlogPost={createBlogPost} />
     </Togglable>
   );
 
   const blogList = () => (
     blogs.map((blog, index) =>
-      <Blog key={blog.id} blog={blog} index={index} update={updateBlog} />
+      <Blog key={blog.id} blog={blog} index={index} update={updateBlog} user={user} removeBlog={removeBlog} />
     )
   );
 
@@ -92,7 +108,7 @@ const App = () => {
         ?
         <div className="u-margin-bottom-medium">
           <p className="paragraph">Welcome {user.name}!</p>
-          <button onClick={() => authService.logout(setUser)} className="submitButton">Log Out</button>
+          <button onClick={() => authService.logout(setUser)} className="button">Log Out</button>
         </div>
         :
         <LoginForm

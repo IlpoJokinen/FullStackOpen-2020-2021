@@ -54,6 +54,24 @@
   justify-content: space-between;
 }
 
+.blogInfoRow-buttons :not(:last-child){
+  margin-right: 10px;
+}
+
+.button {
+  padding: 3px;
+}
+
+.button-submit {
+  margin-top: 10px;
+}
+
+.button-warning {
+  background-color: rgba(240, 52, 52, 1);
+  color: #fff;
+};
+
+
 .heading-secondary {
   color: olive;
   font-style: italic;
@@ -77,6 +95,3 @@
   margin: 30px;
 }
 
-.submitButton {
-  margin-top: 10px;
-}

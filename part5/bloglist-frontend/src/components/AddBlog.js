@@ -39,7 +39,7 @@ const AddBlog = ({ createBlogPost }) => {
             onChange={({ target }) => setNewBlog((prevState) => ({ ...prevState, url: target.value }))}
           />
         </div>
-        <button type="submit" className="submitButton">Create</button>
+        <button type="submit" className="button button-submit">Create</button>
       </form>
     </div>
   );

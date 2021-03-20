@@ -43,7 +43,7 @@ const loginForm = ({ username, password, setUsername, setPassword, setUser, setI
             onChange={({ target }) => setPassword(target.value)}
           />
         </div>
-        <button type="submit" className="submitButton">Log In</button>
+        <button type="submit" className="button button-submit">Log In</button>
       </form>
     </div>
   );
