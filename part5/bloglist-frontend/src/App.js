@@ -18,11 +18,13 @@ const App = () => {
 
   const blogFormRef = useRef();
 
+  const fetchBlogs = async () => {
+    const blogsFromDatabase = await blogService.getAll();
+    const sortedBlogs = blogsFromDatabase.sort((firstEl, secondEl) => firstEl.likes - secondEl.likes);
+    setBlogs(sortedBlogs);
+  };
+
   useEffect(() => {
-    const fetchBlogs = async () => {
-      const blogsFromDatabase = await blogService.getAll();
-      setBlogs(blogsFromDatabase);
-    };
     fetchBlogs();
   }, []);
 
@@ -63,6 +65,7 @@ const App = () => {
       setTimeout(() => {
         setInfoText(null);
       }, 5000);
+      await fetchBlogs();
     } catch (error) {
       setInfoText({ message: `${error.response.data.message}`, status: 'error' });
       setTimeout(() => {
