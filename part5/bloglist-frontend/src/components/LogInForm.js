@@ -1,6 +1,14 @@
+import PropTypes from 'prop-types';
 import authService from '../services/auth';
 
-const loginForm = ({ username, password, setUsername, setPassword, setUser, setInfoText }) => {
+const LoginForm = ({
+  username,
+  password,
+  setUsername,
+  setPassword,
+  setUser,
+  setInfoText
+}) => {
 
   const logIn = async (event) => {
     event.preventDefault();
@@ -49,4 +57,13 @@ const loginForm = ({ username, password, setUsername, setPassword, setUser, setI
   );
 };
 
-export default loginForm;
+LoginForm.propTypes = {
+  username: PropTypes.string.isRequired,
+  password: PropTypes.string.isRequired,
+  setUsername: PropTypes.func.isRequired,
+  setPassword: PropTypes.func.isRequired,
+  setUser: PropTypes.func.isRequired,
+  setInfoText: PropTypes.func.isRequired
+};
+
+export default LoginForm;
