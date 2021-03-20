@@ -12,6 +12,7 @@ const AddBlog = ({ createBlogPost }) => {
 
   return (
     <div className="block">
+
       <h2 className="heading-secondary u-margin-bottom-medium">Create new blog</h2>
       <form onSubmit={addBlog}>
         <div className="inputGroup">
