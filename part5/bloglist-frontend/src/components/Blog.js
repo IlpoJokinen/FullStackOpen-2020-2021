@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+
 const Blog = ({ blog, index, update, user, removeBlog }) => {
   const [blogInfo, setBlogInfo] = useState(blog.title);
   const buttonLabel = blogInfo === blog ? 'Hide' : 'View';
@@ -23,7 +24,7 @@ const Blog = ({ blog, index, update, user, removeBlog }) => {
         </p>
         <button className="button" onClick={toggleDetails}>{buttonLabel}</button>
       </div>
-      <div className="blogInfoRow">
+      <div className="blogInfoRow" id="title">
         <p className="paragraph">
           <strong>Title: </strong>
           {blog.title}
@@ -31,19 +32,19 @@ const Blog = ({ blog, index, update, user, removeBlog }) => {
       </div>
       {blogInfo === blog && (
         <div>
-          <div className="blogInfoRow">
+          <div className="blogInfoRow" id="url">
             <p className="paragraph">
               <strong>Url: </strong>
               {blog.url}
             </p>
           </div>
-          <div className="blogInfoRow">
+          <div className="blogInfoRow" id="likes">
             <p className="paragraph">
               <strong>Likes: </strong>
               {blog.likes}
             </p>
           </div>
-          <div className="blogInfoRow">
+          <div className="blogInfoRow" id="author">
             <p className="paragraph">
               <strong>Author: </strong>
               {blog.author}
