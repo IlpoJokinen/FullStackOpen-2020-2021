@@ -2,7 +2,10 @@
 const infoBox = ({ infoText }) => {
 
   return (
-    <div className={infoText.status === 'error' ? 'block--error' : 'block--success'}>
+    <div
+      className={infoText.status === 'error' ? 'block--error' : 'block--success'}
+      id="infoMessageDiv"
+    >
       <h3>
         {infoText.message}
       </h3>
