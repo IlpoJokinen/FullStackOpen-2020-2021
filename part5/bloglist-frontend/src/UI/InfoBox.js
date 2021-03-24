@@ -1,7 +1,8 @@
+/* eslint-disable react/react-in-jsx-scope */
 const infoBox = ({ infoText }) => {
 
   return (
-    <div className={infoText.status === 'error' ? "block--error" : "block--success"}>
+    <div className={infoText.status === 'error' ? 'block--error' : 'block--success'}>
       <h3>
         {infoText.message}
       </h3>

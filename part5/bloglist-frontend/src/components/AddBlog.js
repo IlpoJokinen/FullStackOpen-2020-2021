@@ -8,7 +8,7 @@ const AddBlog = ({ createBlogPost }) => {
 
     await createBlogPost(newBlog);
     setNewBlog('');
-  }
+  };
 
   return (
     <div className="block">

@@ -35,7 +35,7 @@ const App = () => {
       setUser(user);
       blogService.setToken(user.token);
     }
-  }, [])
+  }, []);
 
 
   const createBlogPost = async newBlog => {
@@ -72,7 +72,7 @@ const App = () => {
         setInfoText(null);
       }, 5000);
     }
-  }
+  };
 
   const removeBlog = async blogToBeRemoved => {
     const confirmation = window.confirm(`Remove ${blogToBeRemoved.title} by ${blogToBeRemoved.author}?`);
@@ -133,7 +133,7 @@ const App = () => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;

@@ -62,4 +62,4 @@ const Blog = ({ blog, index, update, user, removeBlog }) => {
   );
 };
 
-export default Blog
+export default Blog;

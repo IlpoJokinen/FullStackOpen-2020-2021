@@ -44,6 +44,23 @@ describe('<Blog />', () => {
       '#author',
       '#likes')
     ).toBeDefined();
+  });
 
+  test('clicking like button twice calls the event handler twice', () => {
+    const mockHandler = jest.fn();
+    const component = render(
+      <Blog
+        blog={blog}
+        update={mockHandler}
+      />
+    );
+
+    const buttonView = component.getByText('View');
+    fireEvent.click(buttonView);
+    const buttonLike = component.getByText('Like');
+    fireEvent.click(buttonLike);
+    fireEvent.click(buttonLike);
+
+    expect(mockHandler.mock.calls).toHaveLength(2);
   });
 });
