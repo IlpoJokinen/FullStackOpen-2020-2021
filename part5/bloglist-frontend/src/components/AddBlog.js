@@ -14,10 +14,11 @@ const AddBlog = ({ createBlogPost }) => {
     <div className="block">
 
       <h2 className="heading-secondary u-margin-bottom-medium">Create new blog</h2>
-      <form onSubmit={addBlog}>
+      <form onSubmit={addBlog} id="form">
         <div className="inputGroup">
           <p className="paragraph">Title </p>
           <input
+            id="title"
             type="text"
             value={newBlog.title || ''}
             onChange={({ target }) => setNewBlog((prevState) => ({ ...prevState, title: target.value }))}
@@ -26,6 +27,7 @@ const AddBlog = ({ createBlogPost }) => {
         <div className="inputGroup">
           <p className="paragraph">Author </p>
           <input
+            id="author"
             type="text"
             value={newBlog.author || ''}
             onChange={({ target }) => setNewBlog((prevState) => ({ ...prevState, author: target.value }))}
@@ -34,6 +36,7 @@ const AddBlog = ({ createBlogPost }) => {
         <div className="inputGroup">
           <p className="paragraph">Url </p>
           <input
+            id="url"
             type="text"
             value={newBlog.url || ''}
             onChange={({ target }) => setNewBlog((prevState) => ({ ...prevState, url: target.value }))}
