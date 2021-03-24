@@ -52,7 +52,7 @@ const Blog = ({ blog, index, update, user, removeBlog }) => {
           </div>
           <div className="blogInfoRow-buttons">
             <button className="button" onClick={giveLike}>Like</button>
-            {user.userId === blog.user.id && (
+            {user && user.userId === blog.user.id && (
               <button className="button button-warning" onClick={() => removeBlog(blog)}>Remove</button>
             )}
           </div>
