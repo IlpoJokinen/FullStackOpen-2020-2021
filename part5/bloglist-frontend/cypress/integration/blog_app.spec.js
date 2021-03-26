@@ -1,12 +1,21 @@
 describe('Blog app', function () {
   beforeEach(function () {
     cy.request('POST', 'http://localhost:3003/api/testing/reset');
-    const user = {
-      name: 'Matti Hälvä',
-      username: 'masa',
-      password: 'salainen'
-    };
-    cy.request('POST', 'http://localhost:3003/api/users', user);
+    const users = [
+      {
+        name: 'Matti Hälvä',
+        username: 'masa',
+        password: 'salainen'
+      },
+      {
+        name: 'Seppo Saario',
+        username: 'sepi',
+        password: 'salasana'
+      }
+    ];
+    users.forEach(user => {
+      cy.request('POST', 'http://localhost:3003/api/users', user);
+    });
     cy.visit('http://localhost:3000');
   });
 
@@ -36,7 +45,6 @@ describe('Blog app', function () {
       cy.login({
         username: 'masa',
         password: 'salainen',
-        skipWarnings: false
       });
     });
 
@@ -73,7 +81,44 @@ describe('Blog app', function () {
         cy.get('#toggleBlogDetails').click().click();
         cy.get('#likes').should('contain', '1');
       });
+
+      it.only('Owner of the blog can remove the post', function () {
+        cy.get('#toggleBlogDetails').click();
+        cy.get('#removeBlogButton').click();
+        cy.get('#blogList').should('be.visible');
+        cy.get('#blogList').children().should('not.exist');
+      });
     });
   });
 
+  describe('Another user creates a blog post', function () {
+    beforeEach(function () {
+      cy.login({
+        username: 'masa',
+        password: 'salainen',
+      });
+      cy.createBlog({
+        title: 'Masan blogi',
+        author: 'Matti Hälvä',
+        url: 'www.masanblogit.fi'
+      });
+      cy.contains('Log Out').click();
+      cy.login({
+        username: 'sepi',
+        password: 'salasana',
+      });
+      cy.createBlog({
+        title: 'Seppo\'s blog post',
+        author: 'Seppo Saario',
+        url: 'www.sijoitukset.fi'
+      });
+    });
+
+    it('User can\'t remove another user\'s post', function () {
+      cy.contains('Masan blogi')
+        .get('#toggleBlogDetails')
+        .click();
+      cy.get('#removeBlogButton').should('not.exist');
+    });
+  });
 });
