@@ -20,7 +20,7 @@ const App = () => {
 
   const fetchBlogs = async () => {
     const blogsFromDatabase = await blogService.getAll();
-    const sortedBlogs = blogsFromDatabase.sort((firstEl, secondEl) => firstEl.likes - secondEl.likes);
+    const sortedBlogs = blogsFromDatabase.sort((firstEl, secondEl) => secondEl.likes - firstEl.likes);
     setBlogs(sortedBlogs);
   };
 
@@ -98,9 +98,13 @@ const App = () => {
 
   const blogList = () => (
     <div id="blogList">
-      {blogs.map((blog, index) =>
-        <Blog key={blog.id} blog={blog} index={index} update={updateBlog} user={user} removeBlog={removeBlog} />
-      )}
+      <ul style={{ listStyleType: 'none' }}>
+        {blogs.map((blog, index) =>
+          <li key={index}>
+            <Blog blog={blog} index={index} update={updateBlog} user={user} removeBlog={removeBlog} />
+          </li>
+        )}
+      </ul>
     </div>
   );
 

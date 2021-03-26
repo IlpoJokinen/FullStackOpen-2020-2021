@@ -82,7 +82,7 @@ describe('Blog app', function () {
         cy.get('#likes').should('contain', '1');
       });
 
-      it.only('Owner of the blog can remove the post', function () {
+      it('Owner of the blog can remove the post', function () {
         cy.get('#toggleBlogDetails').click();
         cy.get('#removeBlogButton').click();
         cy.get('#blogList').should('be.visible');
@@ -91,7 +91,7 @@ describe('Blog app', function () {
     });
   });
 
-  describe('Another user creates a blog post', function () {
+  describe('When there are blog posts from multiple users', function () {
     beforeEach(function () {
       cy.login({
         username: 'masa',
@@ -119,6 +119,15 @@ describe('Blog app', function () {
         .get('#toggleBlogDetails')
         .click();
       cy.get('#removeBlogButton').should('not.exist');
+    });
+
+    it.only('Blogs are shown in order of most likes', function () {
+      cy.get('li').eq(1).should('contain', 'Seppo\'s blog post');
+      cy.get('li').eq(1).contains('View').click();
+
+      cy.get('#likeButton').click();
+
+      cy.get('li').eq(0).should('contain', 'Seppo\'s blog post');
     });
   });
 });
