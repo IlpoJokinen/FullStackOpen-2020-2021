@@ -11,106 +11,107 @@ import loginService from './services/login';
 import noteService from './services/notes';
 
 const App = () => {
-    const [notes, setNotes] = useState();
-    const [errorMessage, setErrorMessage] = useState(null);
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [user, setUser] = useState(null);
+  const [notes, setNotes] = useState();
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [user, setUser] = useState(null);
 
-    const noteFormRef = useRef();
+  const noteFormRef = useRef();
 
-    useEffect(() => {
-        noteService
-            .getAll()
-            .then(initialNotes => {
-                let copy = JSON.parse(JSON.stringify(initialNotes));
-                setNotes(copy)
-                return copy
-            })
-    }, [])
+  useEffect(() => {
+    noteService
+      .getAll()
+      .then(initialNotes => {
+        let copy = JSON.parse(JSON.stringify(initialNotes));
+        setNotes(copy)
+        return copy
+      })
+  }, [])
 
-    useEffect(() => {
-        const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser');
-        if (loggedUserJSON) {
-            const user = JSON.parse(loggedUserJSON);
-            setUser(user);
-            noteService.setToken(user.token);
-        }
-    }, [])
-
-    const toggleImportanceOf = (id) => {
-        const note = notes.find(n => n.id === id)
-        const changedNote = { ...note, important: !note.important }
-        noteService
-            .update(id, changedNote)
-            .then(returnedNote => {
-                setNotes(notes.map(note => note.id !== id ? note : returnedNote))
-            })
-            .catch(error => {
-                setErrorMessage(
-                    `Note '${note.content}' was already deleted from server`
-                )
-                setTimeout(() => {
-                    setErrorMessage(null)
-                }, 5000)
-                setNotes(notes.filter(n => n.id !== id))
-            })
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser');
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON);
+      setUser(user);
+      noteService.setToken(user.token);
     }
+  }, [])
 
-    const addNote = noteObject => {
-        noteFormRef.current.toggleVisibility();
-        noteService
-            .create(noteObject)
-            .then(returnedNote => {
-                setNotes(notes.concat(returnedNote))
-            })
-    }
+  const toggleImportanceOf = (id) => {
+    const note = notes.find(n => n.id === id)
+    const changedNote = { ...note, important: !note.important }
+    noteService
+      .update(id, changedNote)
+      .then(returnedNote => {
+        setNotes(notes.map(note => note.id !== id ? note : returnedNote))
+      })
+    // eslint-disable-next-line no-unused-vars
+      .catch(error => {
+        setErrorMessage(
+          `Note '${note.content}' was already deleted from server`
+        )
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+        setNotes(notes.filter(n => n.id !== id))
+      })
+  }
 
-    const loginForm = () => (
-        <Togglable buttonLabel='login'>
-            <LoginForm
-                username={username}
-                password={password}
-                setUsername={setUsername}
-                setPassword={setPassword}
-                setUser={setUser}
-                setErrorMessage={setErrorMessage}
-            />
-        </Togglable>
-    );
+  const addNote = noteObject => {
+    noteFormRef.current.toggleVisibility();
+    noteService
+      .create(noteObject)
+      .then(returnedNote => {
+        setNotes(notes.concat(returnedNote))
+      })
+  }
 
-    const noteForm = () => (
-        <Togglable buttonLabel="new note" ref={noteFormRef}>
-            <AddNote createNote={addNote} />
-        </Togglable>
-    );
+  const loginForm = () => (
+    <Togglable buttonLabel='login'>
+      <LoginForm
+        username={username}
+        password={password}
+        setUsername={setUsername}
+        setPassword={setPassword}
+        setUser={setUser}
+        setErrorMessage={setErrorMessage}
+      />
+    </Togglable>
+  );
 
-    return (
+  const noteForm = () => (
+    <Togglable buttonLabel="new note" ref={noteFormRef}>
+      <AddNote createNote={addNote} />
+    </Togglable>
+  );
+
+  return (
+    <div>
+      <h1>Notes</h1>
+      <Notification message={errorMessage} />
+      {user === null
+        ? loginForm()
+        :
         <div>
-            <h1>Notes</h1>
-            <Notification message={errorMessage} />
-            {user === null
-                ? loginForm()
-                :
-                <div>
-                    <div>
-                        <p>{user.name} logged in</p>
-                        <button onClick={() => loginService.logout(setUser)}>Log out</button>
-                    </div>
-                    <hr />
-                    {noteForm()}
-                </div>
-            }
-            {notes && (
-                <ul>
-                    {notes.map(note =>
-                        <Note key={note.id} note={note} toggleImportance={() => toggleImportanceOf(note.id)} />
-                    )}
-                </ul>
-            )}
-            <Footer />
+          <div>
+            <p>{user.name} logged in</p>
+            <button onClick={() => loginService.logout(setUser)}>Log out</button>
+          </div>
+          <hr />
+          {noteForm()}
         </div>
-    )
+      }
+      {notes && (
+        <ul>
+          {notes.map(note =>
+            <Note key={note.id} note={note} toggleImportance={() => toggleImportanceOf(note.id)} />
+          )}
+        </ul>
+      )}
+      <Footer />
+    </div>
+  )
 }
 
 export default App
