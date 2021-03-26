@@ -33,7 +33,7 @@ const LoginForm = ({
   return (
     <div className="block u-margin-bottom-medium">
       <h2 className="heading-secondary u-margin-bottom-medium">log in to application</h2>
-      <form onSubmit={logIn}>
+      <form onSubmit={logIn} id="loginForm">
         <div className="inputGroup">
           <p className="paragraph">Username</p>
           <input
