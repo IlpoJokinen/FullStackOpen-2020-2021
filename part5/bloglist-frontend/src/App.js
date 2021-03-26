@@ -97,9 +97,11 @@ const App = () => {
   );
 
   const blogList = () => (
-    blogs.map((blog, index) =>
-      <Blog key={blog.id} blog={blog} index={index} update={updateBlog} user={user} removeBlog={removeBlog} />
-    )
+    <div id="blogList">
+      {blogs.map((blog, index) =>
+        <Blog key={blog.id} blog={blog} index={index} update={updateBlog} user={user} removeBlog={removeBlog} />
+      )}
+    </div>
   );
 
   return (

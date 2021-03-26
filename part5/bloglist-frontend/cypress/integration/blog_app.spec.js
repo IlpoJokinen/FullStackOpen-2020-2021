@@ -23,7 +23,7 @@ describe('Blog app', function () {
     cy.contains('Wrong credentials');
   });
 
-  it('user can log in', function () {
+  it('User can log in', function () {
     cy.get('#username').type('masa');
     cy.get('#password').type('salainen');
     cy.get('#loginButton').click();
@@ -31,7 +31,7 @@ describe('Blog app', function () {
     cy.get('#blogView').should('be.visible');
   });
 
-  describe('Loggin in with correct credentials', function () {
+  describe('When logged in', function () {
     beforeEach(function () {
       cy.login({
         username: 'masa',
@@ -39,9 +39,20 @@ describe('Blog app', function () {
         skipWarnings: false
       });
     });
-    it('renders the landing page', function () {
+
+    it('Renders the landing page', function () {
       cy.get('#blogView').should('be.visible');
       cy.contains('Welcome Matti Hälvä!');
+    });
+
+    it('A blog can be created', function () {
+      cy.createBlog({
+        title: 'New Blog Post',
+        author: 'Matti Hälvä',
+        url: 'www.masankeittiö.fi'
+      });
+      cy.get('.blogPost').should('be.visible');
+      cy.get('#blogList').children().should('have.length', 1);
     });
   });
 
