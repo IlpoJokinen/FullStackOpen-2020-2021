@@ -22,7 +22,7 @@ const Blog = ({ blog, index, update, user, removeBlog }) => {
         <p className="paragraph-header">
           Blog {index + 1}
         </p>
-        <button className="button" onClick={toggleDetails}>{buttonLabel}</button>
+        <button id="toggleBlogDetails" className="button" onClick={toggleDetails}>{buttonLabel}</button>
       </div>
       <div className="blogInfoRow" id="title">
         <p className="paragraph">
@@ -51,7 +51,7 @@ const Blog = ({ blog, index, update, user, removeBlog }) => {
             </p>
           </div>
           <div className="blogInfoRow-buttons">
-            <button className="button" onClick={giveLike}>Like</button>
+            <button id="likeButton" className="button" onClick={giveLike}>Like</button>
             {user && user.userId === blog.user.id && (
               <button className="button button-warning" onClick={() => removeBlog(blog)}>Remove</button>
             )}

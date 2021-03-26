@@ -54,6 +54,26 @@ describe('Blog app', function () {
       cy.get('.blogPost').should('be.visible');
       cy.get('#blogList').children().should('have.length', 1);
     });
+
+    describe('When there are blog posts available', function () {
+      beforeEach(function () {
+        cy.createBlog({
+          title: 'New Blog Post',
+          author: 'Matti Hälvä',
+          url: 'www.masankeittiö.fi'
+        });
+      });
+
+      it('A blog can be given a like', function () {
+        cy.get('#toggleBlogDetails').click();
+        cy.get('#likes').should('contain', '0');
+        cy.get('#likeButton').click();
+        cy.get('#infoMessageDiv').as('infoBox').should('be.visible');
+        cy.get('@infoBox').contains('Liked blog New Blog Post!');
+        cy.get('#toggleBlogDetails').click().click();
+        cy.get('#likes').should('contain', '1');
+      });
+    });
   });
 
 });
