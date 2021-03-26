@@ -124,7 +124,7 @@ const App = () => {
         <InfoBox infoText={infoText} />
       )}
       {user && (
-        <div>
+        <div id="blogView">
           {blogForm()}
           <div className="block">
             <h2 className="heading-secondary u-margin-bottom-medium">Blogs</h2>
