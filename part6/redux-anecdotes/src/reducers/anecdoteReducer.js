@@ -1,5 +1,6 @@
 import service from '../services/anecdoteService'
 import { showNotification } from '../reducers/notificationReducer'
+import { filterByInput } from '../reducers/filterReducer'
 
 export const init = () => {
   return async dispatch => {
@@ -36,6 +37,16 @@ export const createAnecdote = (newAnecdote) => {
   }
 }
 
+export const filterAnecdotes = (input) => {
+  return async dispatch => {
+    dispatch(filterByInput(input))
+    dispatch({
+      type: 'FILTER_ANECDOTES',
+      input: input
+    })
+  }
+}
+
 const reducer = (state = [], action) => {
   switch(action.type) {
     case 'VOTE':
@@ -47,6 +58,15 @@ const reducer = (state = [], action) => {
       return [ ...state, action.anecdote ]
     case 'INIT_ANECDOTES':
       return state.concat(action.anecdotes) 
+    case 'FILTER_ANECDOTES':
+      const filteredAnecdotes = state.map(anecdote => {
+        if (anecdote.content.includes(action.input)) {
+          return { ...anecdote, filtered: false }
+        } else {
+          return { ...anecdote, filtered: true }
+        }
+      })
+      return filteredAnecdotes
     default:
       return state
   }

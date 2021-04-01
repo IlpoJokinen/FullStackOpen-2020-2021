@@ -1,7 +1,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { voteAnecdote } from '../reducers/anecdoteReducer'
-import { showNotification } from '../reducers/notificationReducer'
+import store from '../store/store'
 import Notification from './Notification'
 
 const Anecdote = ({ anecdote, vote }) => {
@@ -23,11 +23,20 @@ const AnecdoteList = () => {
   const dispatch = useDispatch()
   const anecdotes = useSelector(state => state.anecdotes)
   const notification = useSelector(state => state.notification)
-  const sortedAnecdotes = anecdotes.sort((a, b) => b.votes - a.votes)
+  const filter = useSelector(state => state.filter)
+
+  let sortedAnecdotes
+  if (filter && filter.length) {
+    sortedAnecdotes = anecdotes
+      .filter(anecdote => anecdote.filtered === false)
+      .sort((a, b) => b.votes - a.votes)
+  } else {
+    sortedAnecdotes = anecdotes
+      .sort((a, b) => b.votes - a.votes)
+  }
 
   return (
     <div>
-      <h2>Anecdotes</h2>
       {notification && (
         <Notification />
       )}

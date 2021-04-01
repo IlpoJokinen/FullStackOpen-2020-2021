@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { init } from './reducers/anecdoteReducer'
 import AnecdoteList from './components/AnecdoteList'
 import AnecdoteForm from './components/AnecdoteForm'
+import Filter from './components/Filter'
 
 const App = (props) => {
 
@@ -13,6 +14,8 @@ const App = (props) => {
 
   return (
     <div>
+      <h2>Anecdotes</h2>
+      <Filter />
       <AnecdoteList />
       <AnecdoteForm />
     </div>
