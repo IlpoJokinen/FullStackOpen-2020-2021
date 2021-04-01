@@ -1,17 +1,14 @@
 import React, { useEffect } from 'react'
-// import { connect } from 'react-redux'
+import { connect } from 'react-redux'
 import { init } from './reducers/anecdoteReducer'
 import AnecdoteList from './components/AnecdoteList'
 import AnecdoteForm from './components/AnecdoteForm'
 import Filter from './components/Filter'
-import { useDispatch } from 'react-redux'
 
 const App = (props) => {
-  const dispatch = useDispatch()
   useEffect(() => {
-    // props.init()
-    dispatch(init())
-  }, [dispatch])
+    props.init()
+  }, [props])
 
   return (
     <div>
@@ -23,5 +20,4 @@ const App = (props) => {
   )
 }
 
-// export default connect(null, { init })(App)
-export default App
+export default connect(null, { init })(App)

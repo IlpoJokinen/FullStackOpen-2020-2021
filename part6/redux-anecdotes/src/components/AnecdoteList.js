@@ -37,17 +37,6 @@ const AnecdoteList = (props) => {
   )
 }
 
-// const mapStateToProps = state => state.filter 
-//   ? { 
-//     anecdotes: state.anecdotes
-//       .filter(anecdote => anecdote.filtered === false)
-//       .sort((a, b) => b.votes - a.votes)
-//     }
-//   : { 
-//     anecdotes: state.anecdotes
-//     .sort((a, b) => b.votes - a.votes) 
-//   }
-
 const filterCheck = (state) => {
   if (state.filter) {
     return { 
@@ -77,6 +66,6 @@ const mapStateToProps = state => {
   }
 }
 
-const ConnectedAnecdoteList = connect(mapStateToProps)(AnecdoteList)
+const ConnectedAnecdoteListComponent = connect(mapStateToProps)(AnecdoteList)
 
-export default ConnectedAnecdoteList
+export default ConnectedAnecdoteListComponent
