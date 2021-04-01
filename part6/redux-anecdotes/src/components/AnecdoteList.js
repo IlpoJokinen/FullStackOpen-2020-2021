@@ -1,7 +1,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { voteAnecdote } from '../reducers/anecdoteReducer'
-import store from '../store/store'
+import { showNotification } from '../reducers/notificationReducer'
 import Notification from './Notification'
 
 const Anecdote = ({ anecdote, vote }) => {

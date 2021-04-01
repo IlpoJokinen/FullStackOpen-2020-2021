@@ -7,10 +7,9 @@ router.get('/', async (request, response) => {
 })
 
 router.post('/', async (request, response) => {
-  const { content } = request.body
-  const newAnecdoteObject = { content }
+  const { content, votes } = request.body
+  const newAnecdoteObject = { content, votes }
   const anecdote = new Anecdote(newAnecdoteObject)
-
   const savedAnecdote = await anecdote.save()
   response.status(201).json(savedAnecdote)
 })
