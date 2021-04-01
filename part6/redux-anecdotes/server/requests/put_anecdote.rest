@@ -1,0 +1,7 @@
+PUT http://localhost:3001/anecdotes/6065a07b3abfd744400453c3
+Content-Type: application/json
+
+{
+  "content": "If it hurts, do it more often",
+  "votes": 1
+}
