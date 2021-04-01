@@ -12,10 +12,18 @@ export const init = () => {
   }
 }
 
-export const voteAnecdote = (id) => {
+export const voteAnecdote = (anecdote) => {
   return async dispatch => {
-    const anecdote = await service.getOne(id)
+    if (anecdote.filtered) {
+      const copy = {
+        content: anecdote.content,
+        votes: anecdote.votes,
+        id: anecdote.id
+      }
+      await service.voteAnecdote(copy)
+    }
     await service.voteAnecdote(anecdote)
+
     dispatch({
       type: 'VOTE',
       anecdote
