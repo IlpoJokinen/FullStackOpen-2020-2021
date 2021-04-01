@@ -34,6 +34,10 @@ export const createAnecdote = (newAnecdote) => {
       type: 'CREATE',
       anecdote
     })
+    dispatch(showNotification(
+      `'${anecdote.content}' created`,
+      5
+    ))
   }
 }
 
